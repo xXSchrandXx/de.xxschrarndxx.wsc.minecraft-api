@@ -8,7 +8,7 @@
     <nav class="contentHeaderNavigation">
         <ul>
             <li>
-				<a href="{link controller='MinecraftList'}{/link}" class="button">
+				<a href="{link controller='MinecraftList' application='minecraft'}{/link}" class="button">
 					{icon size=16 name='list' type='solid'}
                 	<span>{lang}wcf.acp.menu.link.configuration.minecraft.minecraftList{/lang}</span>
 				</a>

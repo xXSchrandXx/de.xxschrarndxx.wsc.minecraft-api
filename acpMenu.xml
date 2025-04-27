@@ -9,12 +9,12 @@
 			<parent>wcf.acp.menu.link.management</parent>
 		</acpmenuitem>
 		<acpmenuitem name="wcf.acp.menu.link.configuration.minecraft.minecraftList">
-			<controller>wcf\acp\page\MinecraftListPage</controller>
+			<controller>minecraft\acp\page\MinecraftListPage</controller>
 			<parent>wcf.acp.menu.link.configuration.minecraft</parent>
 			<permissions>admin.minecraft.canManageConnection</permissions>
 		</acpmenuitem>
 		<acpmenuitem name="wcf.acp.menu.link.configuration.minecraft.minecraftList.add">
-			<controller>wcf\acp\form\MinecraftAddPage</controller>
+			<controller>minecraft\acp\form\MinecraftAddPage</controller>
 			<parent>wcf.acp.menu.link.configuration.minecraft.minecraftList</parent>
 			<permissions>admin.minecraft.canManageConnection</permissions>
 			<icon>plus</icon>
