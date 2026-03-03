@@ -4,7 +4,6 @@ namespace wcf\action;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use wcf\system\exception\SystemException;
-use wcf\util\JSON;
 
 /**
  * Abstract Minecraft action class
@@ -56,7 +55,7 @@ abstract class AbstractMinecraftAction extends AbstractMinecraftGETAction
     {
         // try to decode given json
         try {
-            $parameters += JSON::decode((string) $request->getBody());
+            $parameters += \json_decode((string) $request->getBody(), true);
         } catch (SystemException $e) {
             if (ENABLE_DEBUG_MODE) {
                 $response = $this->send('Bad Request. Could not decode json.', 400);
