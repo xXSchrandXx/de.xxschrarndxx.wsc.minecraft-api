@@ -3,7 +3,7 @@
 namespace wcf\action;
 
 use Laminas\Diactoros\Response\JsonResponse;
-use SystemException;
+use wcf\system\exception\SystemException;
 use wcf\util\JSON;
 
 /**
