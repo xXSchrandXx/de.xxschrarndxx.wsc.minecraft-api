@@ -7,7 +7,7 @@
 3. Download [WSC-Bridge](https://www.spigotmc.org/resources/wsc-bridge.100716/) and put it in your `plugins` folder.
 4. Restart your server.
 5. Open the `config.yml` in the `wscbridge-{bungee/bukkit}` folder.
-6. Set `user` to the user from the entry from step 2.
+6. Set `user` and `password` to the user from the entry from step 2.
 7. Set `password` to the password from the entry from step 2.
 8. Restart your server.
 
