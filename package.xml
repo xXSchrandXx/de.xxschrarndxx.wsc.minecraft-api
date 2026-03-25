@@ -7,7 +7,7 @@
 		<packagename language="de"><![CDATA[Minecraft-API]]></packagename>
 		<packagedescription><![CDATA[API for Minecraft through WSC-Minecraft-Bridge.]]></packagedescription>
 		<packagedescription language="de"><![CDATA[API für Minecraft durch WSC-Minecraft-Bridge.]]></packagedescription>
-		<version>4.0.2</version>
+		<version>4.1.0</version>
 		<date>2022-12-22</date>
 	</packageinformation>
 
@@ -25,10 +25,8 @@
 		<excludedpackage version="*">de.atrox-dev.minecraft.server</excludedpackage>
 	</excludedpackages>
 
-	<instructions type="update" fromversion="4.0.0">
-		<instruction type="acpTemplate"/>
+	<instructions type="update" fromversion="4.0.1">
 		<instruction type="file"/>
-		<instruction type="acpMenu"/>
 	</instructions>
 
 	<instructions type="install">
