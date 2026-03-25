@@ -12,7 +12,6 @@ use Psr\Http\Client\ClientInterface as PsrClientInterface;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use wcf\util\JSON;
 
 /**
  * Mojang util class
@@ -78,7 +77,7 @@ class MojangUtil
         if (!array_key_exists(self::BODY, $args)) {
             $args[self::BODY] = null;
         } else if (is_array($args[self::BODY])) {
-            $args[self::BODY] = JSON::encode($args[self::BODY]);
+            $args[self::BODY] = \json_encode($args[self::BODY]);
         } else if (!( is_string($args[self::BODY]) || is_resource($args[self::BODY]) || $args[self::BODY] instanceof StreamInterface)) {
             throw new BadMethodCallException('Unknown body.');
         }
