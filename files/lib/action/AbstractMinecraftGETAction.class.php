@@ -13,10 +13,15 @@ use RangeException;
 use TypeError;
 use wcf\data\minecraft\Minecraft;
 use wcf\data\minecraft\MinecraftList;
+use wcf\event\minecraft\ExecuteEvent;
+use wcf\event\minecraft\GetMinecraftEvent;
+use wcf\event\minecraft\PrepareEvent;
+use wcf\event\minecraft\ReadParametersEvent;
+use wcf\event\minecraft\ValidateHeaderEvent;
+use wcf\event\minecraft\ValidateParametersEvent;
 use wcf\system\event\EventHandler;
 use wcf\system\flood\FloodControl;
 use wcf\system\request\RouteHandler;
-use wcf\util\ArrayUtil;
 use wcf\util\StringUtil;
 
 /**
@@ -61,52 +66,64 @@ abstract class AbstractMinecraftGETAction implements RequestHandlerInterface
 
         // validate Request
         $this->prepare($request, $response);
+        $event = new PrepareEvent($request, $response);
+        $eventHandler->fire($event);
+        $response = $event->getResponse();
         if ($response instanceof JsonResponse) {
             return $response;
         }
-        $eventHandler->fireAction($this, 'prepare');
 
         // validate Header
         $this->validateHeader($request, $response);
+        $event = new ValidateHeaderEvent($request, $response);
+        $eventHandler->fire($event);
+        $response = $event->getResponse();
         if ($response instanceof JsonResponse) {
             return $response;
         }
-        $eventHandler->fireAction($this, 'validateHeader');
 
         // gets Minecraft
         $minecraft = $this->getMinecraft($request, $response);
+        $event = new GetMinecraftEvent($request, $minecraft, $response);
+        $eventHandler->fire($event);
+        $response = $event->getResponse();
         if ($response instanceof JsonResponse) {
             return $response;
         }
+
+        // reads Parameters
         $parameters = [
             'minecraft' => $minecraft,
             'minecraftID' => $minecraft->minecraftID
         ];
-        $eventHandler->fireAction($this, 'getMinecraft', $parameters);
-
-        // reads Parameters
         $this->readParameters($request, $parameters, $response);
+        $event = new ReadParametersEvent($request, $minecraft, $parameters, $response);
+        $eventHandler->fire($event);
+        $response = $event->getResponse();
+        $parameters = $event->getParameters();
         if ($response instanceof JsonResponse) {
             return $response;
         }
-        $eventHandler->fireAction($this, 'readParameters', $parameters);
 
         // validates Parameters
         $this->validateParameters($parameters, $response);
+        $event = new ValidateParametersEvent($request, $minecraft, $parameters, $response);
+        $eventHandler->fire($event);
+        $response = $event->getResponse();
+        $parameters = $event->getParameters();
         if ($response instanceof JsonResponse) {
             return $response;
         }
-        $eventHandler->fireAction($this, 'validateParameters', $parameters);
 
         // executes Action
         $response = $this->execute($parameters);
-        // set Response in parameters for event (only because events should be able to modify the response)
-        $parameters['response'] = $response;
-        $eventHandler->fireAction($this, 'execute', $parameters);
+        $event = new ExecuteEvent($request, $minecraft, $parameters, $response);
+        $eventHandler->fire($event);
+        $response = $event->getResponse();
 
         // set final response
-        if (isset($parameters['response']) && $parameters['response'] instanceof JsonResponse) {
-            return $parameters['response'];
+        if (isset($response) && $response instanceof JsonResponse) {
+            return $response;
         } else if (ENABLE_DEBUG_MODE) {
             return $this->send('Internal Error. No valid Response.', 500);
         } else {
